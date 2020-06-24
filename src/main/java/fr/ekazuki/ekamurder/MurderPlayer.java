@@ -1,6 +1,9 @@
 package fr.ekazuki.ekamurder;
 
 
+import java.lang.reflect.Field;
+import java.util.UUID;
+
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
@@ -141,16 +144,20 @@ public class MurderPlayer {
 		String signature = skin.getSignature();
         for(Player pl : this.plugin.getServer().getOnlinePlayers()){
             if(pl == this.player) continue;
+            CraftPlayer cpl = ((CraftPlayer)pl);
+ 
             //REMOVES THE PLAYER
-            ((CraftPlayer)pl).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)this.player).getHandle()));
+            cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)this.player).getHandle()));
             //CHANGES THE PLAYER'S GAME PROFILE
-            GameProfile gp = ((CraftPlayer)this.player).getProfile();
-            gp.getProperties().removeAll("textures");
-            gp.getProperties().put("textures", new Property("textures", value, signature));
+    		GameProfile gameProfile = cpl.getHandle().getProfile();
+    		gameProfile.getProperties().removeAll("textures");
+    		gameProfile.getProperties().put("textures", new Property("textures", value, signature));
+        	pl.setPlayerListName("§kUSERNAME");
+    		
             //ADDS THE PLAYER
-            ((CraftPlayer)pl).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)this.player).getHandle()));
-            ((CraftPlayer)pl).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.player.getEntityId()));
-            ((CraftPlayer)pl).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)this.player).getHandle()));
+    		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)this.player).getHandle()));
+    		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.player.getEntityId()));
+    		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)this.player).getHandle()));
         }
 	}
 	

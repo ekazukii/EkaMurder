@@ -16,10 +16,14 @@
 	        <id>spigot-repo</id>
 	        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 	    </repository>
-	      <repository>
-		    <id>dmulloy2-repo</id>
-		    <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-		  </repository>
+	    <repository>
+		  <id>dmulloy2-repo</id>
+	      <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+		</repository>
+		<repository>
+          <id>placeholderapi</id>
+          <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
 	</repositories>
 	
 	<build>
@@ -74,5 +78,11 @@
 		  <artifactId>json</artifactId>
 		  <version>20200518</version>
 		</dependency>
+		<dependency>
+          <groupId>me.clip</groupId>
+          <artifactId>placeholderapi</artifactId>
+          <version>2.10.6</version>
+          <scope>provided</scope>
+        </dependency>
 	</dependencies>
 </project>

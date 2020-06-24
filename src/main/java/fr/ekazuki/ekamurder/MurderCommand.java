@@ -90,6 +90,14 @@ public class MurderCommand implements CommandExecutor {
 					}
 
 					break;
+				case "skin":
+					if(sender.hasPermission("murder.debug")) {
+						MurderFakePlayer player = new MurderFakePlayer(MurderSkin.getMultipleRandom(1).get(0), "USERNAME");
+					} else {
+						this.noPerm(sender);
+					}
+					
+					break;
 				case "failshoot":
 					if(sender.hasPermission("murder.debug")) {
 						this.plugin.dropBow();
