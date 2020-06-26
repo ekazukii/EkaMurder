@@ -16,10 +16,14 @@ import org.bukkit.util.Vector;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import net.minecraft.server.v1_15_R1.DimensionManager;
+import net.minecraft.server.v1_15_R1.EnumGamemode;
 import net.minecraft.server.v1_15_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_15_R1.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.server.v1_15_R1.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_15_R1.PacketPlayOutPlayerInfo.EnumPlayerInfoAction;
+import net.minecraft.server.v1_15_R1.PacketPlayOutRespawn;
+import net.minecraft.server.v1_15_R1.WorldType;
 
 public class MurderPlayer {
 	public Player player;
@@ -143,7 +147,6 @@ public class MurderPlayer {
 		String value = skin.getValue();
 		String signature = skin.getSignature();
         for(Player pl : this.plugin.getServer().getOnlinePlayers()){
-            if(pl == this.player) continue;
             CraftPlayer cpl = ((CraftPlayer)pl);
  
             //REMOVES THE PLAYER
@@ -160,6 +163,14 @@ public class MurderPlayer {
     		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)this.player).getHandle()));
     		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.player.getEntityId()));
     		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)this.player).getHandle()));
+    		
+    		if(pl == this.player) {
+    			PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(DimensionManager.OVERWORLD, 0, WorldType.NORMAL, EnumGamemode.ADVENTURE);
+    			cpl.getHandle().playerConnection.sendPacket(respawn);
+    			pl.teleport(pl.getLocation());
+    			float speed = pl.getWalkSpeed();
+    			pl.setWalkSpeed(0.2f);
+    		}
         }
 	}
 	
