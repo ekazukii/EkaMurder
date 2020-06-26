@@ -277,6 +277,10 @@ public class MurderListener implements Listener {
             new BukkitRunnable() {
             	int counter = countdownTime;
             	public void run() {
+        			if(plugin.isPlaying) {
+        				this.cancel();
+        			}
+        			
             		counter--;
             		
           			EkaMurder plugin = EkaMurder.INSTANCE;
@@ -285,7 +289,7 @@ public class MurderListener implements Listener {
         			}
         			
             		if(counter == 0) {
-            			plugin.startGame(null);
+            			plugin.startGame(null);	
             			this.cancel();
             		} else if(counter % 10 == 0) {
             			for(Player online : plugin.getServer().getOnlinePlayers()) {
