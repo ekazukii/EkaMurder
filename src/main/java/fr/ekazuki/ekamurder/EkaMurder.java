@@ -1,5 +1,7 @@
 package fr.ekazuki.ekamurder;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -34,7 +38,7 @@ public class EkaMurder extends JavaPlugin{
 		INSTANCE = this;
 		
 		this.isDebugging = true;
-		this.saveDefaultConfig();
+		this.saveDefaultConfig(); // this.getConfig()
 		this.getCommand("murder").setExecutor(new MurderCommand(this));
 	    this.getServer().getPluginManager().registerEvents(new MurderListener(this), this);
 	    this.getCommand("murder").setTabCompleter(new MurderTabCompletion());
@@ -45,6 +49,15 @@ public class EkaMurder extends JavaPlugin{
 		this.getServer().getMessenger().registerIncomingPluginChannel(this, "murder:info", new MurderPluginMessage());
 	    //this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "murder:info");
+		
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "spawns.yml"));
+        data.options().copyDefaults(true);
+        try {
+			data.save(new File(getDataFolder(), "spawns.yml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
         if(this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
             new MurderPlaceholder().register();
@@ -107,7 +120,8 @@ public class EkaMurder extends JavaPlugin{
 			sender.sendMessage("§4Erreur : §cVous ne pouvez pas lancer à murder à moins de 3 joueur !");
 		}
 		
-		if(this.getConfig().getList("spawns").size() < bukkitPlayers.size()) {
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "spawns.yml"));
+		if(data.getList("spawns").size() < bukkitPlayers.size()) {
 			sender.sendMessage("§4Erreur : §cIl n'y a pas assez de points de spawn !");
 			sender.sendMessage("§8§oPour les définir, merci de faire §7/murder addSpawn");
 			return;
@@ -123,7 +137,7 @@ public class EkaMurder extends JavaPlugin{
 			roles.add(MurderRole.INNOCENT);
 		}
 		
-		List<?> original = this.getConfig().getList("spawns");
+		List<?> original = data.getList("spawns");
 		List<Object> list = new ArrayList<Object>(original);
 		this.clearItem();
 		
@@ -151,8 +165,9 @@ public class EkaMurder extends JavaPlugin{
 		this.getServer().broadcastMessage("§4[§c§lMurder§r§4]§e La partie de Murder est finie");
 		this.debug("Stopping the game [EkaMurder#stopGame()]");
 		
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "spawns.yml"));
 		@SuppressWarnings("unchecked")
-		List<Double> location = (List<Double>) this.getConfig().getList("death");
+		List<Double> location = (List<Double>) data.getList("death");
 		Location loc = new Location(this.getServer().getWorld("world"), location.get(0)+0.5, location.get(1), location.get(2)+0.5, location.get(3).floatValue(), location.get(4).floatValue());
 
 		
@@ -213,7 +228,9 @@ public class EkaMurder extends JavaPlugin{
 		
 		this.players.remove(mpl);
 		this.checkState();
-		List<Double> location = (List<Double>) this.getConfig().getList("death");
+		
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "spawns.yml"));
+		List<Double> location = (List<Double>) data.getList("death");
 		mpl.player.teleport(new Location(mpl.player.getWorld(), location.get(0)+0.5, location.get(1), location.get(2)+0.5, location.get(3).floatValue(), location.get(4).floatValue()));
 		mpl.player.setGameMode(GameMode.SPECTATOR);
 		

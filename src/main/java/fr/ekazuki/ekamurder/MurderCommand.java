@@ -1,5 +1,7 @@
 package fr.ekazuki.ekamurder;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class MurderCommand implements CommandExecutor {
@@ -160,14 +163,20 @@ public class MurderCommand implements CommandExecutor {
 	@SuppressWarnings("unchecked")
 	private void addSpawnPoint(Location loc) {
 		this.plugin.debug("Add spawn point [MurderCommand#addSpawnPoint()]");
-		List<Object> list = (List<Object>) this.plugin.getConfig().getList("spawns");
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "spawns.yml"));
+		List<Object> list = (List<Object>) data.getList("spawns");
 		list.add(Arrays.asList((double)loc.getBlockX(), loc.getY(), (double)loc.getBlockZ(), (double)loc.getYaw(), (double)loc.getPitch()));
-		this.plugin.saveConfig();
+		try {
+			data.save(new File(this.plugin.getDataFolder(), "spawns.yml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void setDeathPoint(Location loc) {
 		this.plugin.debug("Set death point [MurderCommand#setDeathPoint()]");
-		FileConfiguration config = this.plugin.getConfig();
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "spawns.yml"));
 		List<Double> list = new ArrayList<Double>();
 		
 		list.add((double)loc.getBlockX());
@@ -176,15 +185,25 @@ public class MurderCommand implements CommandExecutor {
 		list.add((double) loc.getYaw());
 		list.add((double)loc.getPitch());
 		
-		config.set("death", list);
-		this.plugin.saveConfig();
+		data.set("death", list);
+		try {
+			data.save(new File(this.plugin.getDataFolder(), "spawns.yml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void resetSpawnPoint() {
+	private void resetSpawnPoint(){
 		this.plugin.debug("Resetting Spawn points [MurderCommand#resetSpawnPoint()]");
-		FileConfiguration config = this.plugin.getConfig();
-		config.set("spawns", new ArrayList<List<Double>>());
-		this.plugin.saveConfig();
+		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "spawns.yml"));
+		data.set("spawns", new ArrayList<List<Double>>());
+		try {
+			data.save(new File(this.plugin.getDataFolder(), "spawns.yml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
