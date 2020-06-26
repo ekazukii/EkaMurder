@@ -50,6 +50,7 @@ public class MurderCommand implements CommandExecutor {
 						if (sender instanceof Player) {
 							Player player = (Player) sender;
 							this.addSpawnPoint(player.getLocation());
+							sender.sendMessage("§4[§c§lMurder§r§4]§e La position de spawn à été ajouté");
 						} else {
 							this.onlyPlayer(sender);
 						}
@@ -60,6 +61,7 @@ public class MurderCommand implements CommandExecutor {
 				case "resetspawn":
 					if(sender.hasPermission("murder.resetspawn")) {
 						this.plugin.debug("/murder resetspawn [MurderCommand#onCommand()]");
+						sender.sendMessage("§4[§c§lMurder§r§4]§e Les positions de spawn ont été remises à zéro");
 						this.resetSpawnPoint();
 					} else {
 						this.noPerm(sender);
@@ -72,6 +74,7 @@ public class MurderCommand implements CommandExecutor {
 						if (sender instanceof Player) {
 							Player player = (Player) sender;
 							this.setDeathPoint(player.getLocation());
+							sender.sendMessage("§4[§c§lMurder§r§4]§e La position de mort à été ajouté");
 						} else {
 							this.onlyPlayer(sender);
 						}
