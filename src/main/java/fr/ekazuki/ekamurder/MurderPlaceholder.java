@@ -67,37 +67,52 @@ public class MurderPlaceholder extends PlaceholderExpansion {
 
         // %someplugin_placeholder1%
         if(identifier.equals("role")){
-            return plugin.getConfig().getString("placeholder1", "value doesnt exist");
+            MurderPlayer mpl = this.plugin.murderPlayerFromOnlinePlayer(player);
+            if(mpl == null) return null;
+            
+            return mpl.role.getDisplayName();
         }
 
         // %someplugin_placeholder2%
         if(identifier.equals("alive_or_dead")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+        	MurderPlayer mpl = this.plugin.murderPlayerFromOnlinePlayer(player);
+        	
+        	if(mpl == null) {
+        		return "dead";
+        	} else {
+            	return "alive";
+        	}
         }
         
         // %someplugin_placeholder2%
         if(identifier.equals("get_detective")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+            MurderPlayer detective = this.plugin.getDetective();
+            if(detective == null) return null;
+            
+            return detective.player.getName();
         }
         
         // %someplugin_placeholder2%
         if(identifier.equals("get_murder")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+            MurderPlayer murder = this.plugin.getMurder();
+            if(murder == null) return null;
+            
+            return murder.player.getName();
         }
         
         // %someplugin_placeholder2%
         if(identifier.equals("murder_wins")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+            return "soon";
         }
         
         // %someplugin_placeholder2%
         if(identifier.equals("detective_wins")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+        	return "soon";
         }
         
         // %someplugin_placeholder2%
         if(identifier.equals("deaths")){
-            return plugin.getConfig().getString("placeholder2", "value doesnt exist");
+        	return "soon";
         }
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 

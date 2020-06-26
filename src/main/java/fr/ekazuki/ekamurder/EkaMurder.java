@@ -45,6 +45,10 @@ public class EkaMurder extends JavaPlugin{
 		this.getServer().getMessenger().registerIncomingPluginChannel(this, "murder:info", new MurderPluginMessage());
 	    //this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "murder:info");
+		
+        if(this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new MurderPlaceholder().register();
+      }
 	}
 	
 	@Override
