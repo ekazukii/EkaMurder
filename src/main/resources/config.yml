@@ -1,3 +1,4 @@
 min-player: 1
 max-player: 1
 countdown-time: 60 
+custom-tablist: true

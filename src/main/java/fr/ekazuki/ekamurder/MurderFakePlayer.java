@@ -34,8 +34,13 @@ public class MurderFakePlayer {
 	private void appear() {
 		String value = skin.getValue();
 		String signature = skin.getSignature();
+		GameProfile gameProfile;
+		if(EkaMurder.INSTANCE.getConfig().getBoolean("custom-tablist")) {
+			gameProfile = new GameProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"), "§kUSERNAME");
+		} else {
+			gameProfile = new GameProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"), this.username);
+		}
 		
-		GameProfile gameProfile = new GameProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"), "§kUSERNAME");
 		gameProfile.getProperties().removeAll("textures");
 		gameProfile.getProperties().put("textures", new Property("textures", value, signature));
 		CraftServer craftServer = (CraftServer) Bukkit.getServer();

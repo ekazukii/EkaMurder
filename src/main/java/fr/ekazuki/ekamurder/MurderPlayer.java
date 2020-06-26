@@ -152,7 +152,9 @@ public class MurderPlayer {
     		GameProfile gameProfile = cpl.getHandle().getProfile();
     		gameProfile.getProperties().removeAll("textures");
     		gameProfile.getProperties().put("textures", new Property("textures", value, signature));
-        	pl.setPlayerListName("§kUSERNAME");
+    		if(plugin.getConfig().getBoolean("custom-tablist")) {
+            	pl.setPlayerListName("§kUSERNAME");
+    		}
     		
             //ADDS THE PLAYER
     		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)this.player).getHandle()));
