@@ -19,9 +19,13 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
  
 public class MurderListener implements Listener {
 	public EkaMurder plugin;
@@ -261,6 +265,45 @@ public class MurderListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage("§4[§c§lMurder§r§4]§e §7Le joueur §8"+ event.getPlayer().getDisplayName() +"§7 a rejoint le §lMurder");
+        int minPlayer = this.plugin.getConfig().getInt("min-player");
+        int maxPlayer = this.plugin.getConfig().getInt("max-player");
+        
+        this.plugin.getServer().broadcastMessage("min player " + minPlayer + " max player " + maxPlayer);
+        
+        if(minPlayer == plugin.getServer().getOnlinePlayers().size()) {
+        	this.plugin.getServer().broadcastMessage("min = player");
+        	int countdownTime = this.plugin.getConfig().getInt("countdown-time");
+        	
+            new BukkitRunnable() {
+            	int counter = countdownTime;
+            	public void run() {
+            		counter--;
+            		
+          			EkaMurder plugin = EkaMurder.INSTANCE;
+        			for(Player online : plugin.getServer().getOnlinePlayers()) {
+        				online.setLevel(counter);
+        			}
+        			
+            		if(counter == 0) {
+            			plugin.startGame(null);
+            			this.cancel();
+            		} else if(counter % 10 == 0) {
+            			for(Player online : plugin.getServer().getOnlinePlayers()) {
+            				online.sendTitle("§2Plus que "+counter+" secondes", null, 5, 25, 10);
+            			}
+            		}
+            	}
+            }.runTaskTimer(this.plugin, 20L, 20L);
+        }
+        
+        if(maxPlayer < plugin.getServer().getOnlinePlayers().size()) {
+        	this.plugin.getServer().broadcastMessage("max < player");
+        	if(!event.getPlayer().hasPermission("murder.join.bypass")) {
+            	event.getPlayer().kickPlayer("Le serveur est plein");
+        	}
+        }
+       
+        		
     }
     
     @EventHandler
@@ -268,3 +311,4 @@ public class MurderListener implements Listener {
     	event.setQuitMessage("§4[§c§lMurder§r§4]§e §7Le joueur §8"+ event.getPlayer().getDisplayName() +"§7 a quitté le §lMurder");
     }
 }
+

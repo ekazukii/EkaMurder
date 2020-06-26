@@ -38,7 +38,7 @@ public class EkaMurder extends JavaPlugin{
 		INSTANCE = this;
 		
 		this.isDebugging = true;
-		this.saveDefaultConfig(); // this.getConfig()
+		this.saveDefaultConfig();
 		this.getCommand("murder").setExecutor(new MurderCommand(this));
 	    this.getServer().getPluginManager().registerEvents(new MurderListener(this), this);
 	    this.getCommand("murder").setTabCompleter(new MurderTabCompletion());
@@ -117,13 +117,17 @@ public class EkaMurder extends JavaPlugin{
 		Collection<? extends Player> bukkitPlayers = this.getServer().getOnlinePlayers();
 		
 		if(bukkitPlayers.size() < 3) {
-			sender.sendMessage("§4Erreur : §cVous ne pouvez pas lancer à murder à moins de 3 joueur !");
+			if(sender != null) {
+				sender.sendMessage("§4Erreur : §cVous ne pouvez pas lancer à murder à moins de 3 joueur !");
+			}
 		}
 		
 		FileConfiguration data = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "spawns.yml"));
 		if(data.getList("spawns").size() < bukkitPlayers.size()) {
-			sender.sendMessage("§4Erreur : §cIl n'y a pas assez de points de spawn !");
-			sender.sendMessage("§8§oPour les définir, merci de faire §7/murder addSpawn");
+			if(sender != null) {
+				sender.sendMessage("§4Erreur : §cIl n'y a pas assez de points de spawn !");
+				sender.sendMessage("§8§oPour les définir, merci de faire §7/murder addSpawn");
+			}
 			return;
 		}
 		
