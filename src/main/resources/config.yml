@@ -1,4 +1,8 @@
-min-player: 1
-max-player: 1
+min-player: 4
+max-player: 24
 countdown-time: 60 
 custom-tablist: true
+
+command-end: "say %player% est trop trop fort"
+command-murder-win: "say %player% murder trop trop fort"
+command-detective-win: "say %player% detective trop trop fort"

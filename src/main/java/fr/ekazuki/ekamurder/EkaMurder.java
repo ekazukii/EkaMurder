@@ -22,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 public class EkaMurder extends JavaPlugin{
 	
 	public Boolean isPlaying;
@@ -29,6 +31,7 @@ public class EkaMurder extends JavaPlugin{
 	public Collection<MurderFakePlayer> fakePlayers;
     private final SecureRandom random = new SecureRandom();
 	public boolean isDebugging;
+	public boolean usePAPI = false;
 	
 	public static EkaMurder INSTANCE;
 
@@ -60,6 +63,7 @@ public class EkaMurder extends JavaPlugin{
 		}
 		
         if(this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+        	this.usePAPI = true;
             new MurderPlaceholder().register();
       }
 	}
@@ -197,21 +201,48 @@ public class EkaMurder extends JavaPlugin{
 		this.debug("Cheking end of game [EkaMurder#checkState()]");
 		String title = null;
 		
+		String command = null;
+		Player player = null;
+		
 		if (this.players.size() == 1) {
 			if (this.getDetective() == null) {
 				title = "§4Victoire du Murder";
+				command = this.getConfig().getString("command-murder-win");
+				player = this.getMurder().player;
 			} else {
 				title = "§2Victoire du Détéctive";
+				command = this.getConfig().getString("command-detective-win");
+				player = this.getDetective().player;
 			}
 		} else {
 			if (this.getMurder() == null) {
 				title = "§2Victoire du Détéctive";
+				command = this.getConfig().getString("command-detective-win");
+				player = this.getDetective().player;
 			}
 		}
 		
 		if (title != null) {
+			if(this.usePAPI) {
+				command = PlaceholderAPI.setPlaceholders(player, command);
+			} else {
+				command.replace("%player_name%", player.getName());
+			}
+			
+			this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command);
+			
 			this.stopGame();
 			for (Player p : this.getServer().getOnlinePlayers()) {
+				
+				command = this.getConfig().getString("command-end");
+				
+				if(this.usePAPI) {
+					command = PlaceholderAPI.setPlaceholders(p, command);
+				} else {
+					command.replace("%player_name%", p.getName());
+				}
+				
+				this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command);
 				p.sendTitle(title, null, 10, 70, 30);
 			}
 		}
