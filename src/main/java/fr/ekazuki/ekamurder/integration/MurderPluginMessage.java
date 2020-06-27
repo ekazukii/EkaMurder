@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.integration;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -6,6 +6,8 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+
+import fr.ekazuki.ekamurder.EkaMurder;
 
 public class MurderPluginMessage implements PluginMessageListener {
 	

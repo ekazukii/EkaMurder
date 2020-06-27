@@ -26,6 +26,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import fr.ekazuki.ekamurder.player.MurderFakePlayer;
+import fr.ekazuki.ekamurder.player.MurderPlayer;
+import fr.ekazuki.ekamurder.player.MurderRole;
+import fr.ekazuki.ekamurder.player.MurderSkin;
  
 public class MurderListener implements Listener {
 	public EkaMurder plugin;

@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.player;
 
 
 import java.lang.reflect.Field;
@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import fr.ekazuki.ekamurder.EkaMurder;
 import net.minecraft.server.v1_15_R1.DimensionManager;
 import net.minecraft.server.v1_15_R1.EnumGamemode;
 import net.minecraft.server.v1_15_R1.PacketPlayOutEntityDestroy;

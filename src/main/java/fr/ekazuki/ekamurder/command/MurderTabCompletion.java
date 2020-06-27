@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.command;
 
 import java.util.ArrayList;
 import java.util.List;

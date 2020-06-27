@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.player;
 
 public enum MurderRole {
 	MURDER("murder"),

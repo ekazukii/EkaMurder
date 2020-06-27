@@ -22,6 +22,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.ekazuki.ekamurder.command.MurderCommand;
+import fr.ekazuki.ekamurder.command.MurderTabCompletion;
+import fr.ekazuki.ekamurder.integration.MurderPlaceholder;
+import fr.ekazuki.ekamurder.integration.MurderPluginMessage;
+import fr.ekazuki.ekamurder.player.MurderFakePlayer;
+import fr.ekazuki.ekamurder.player.MurderPlayer;
+import fr.ekazuki.ekamurder.player.MurderRole;
+import fr.ekazuki.ekamurder.player.MurderSkin;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class EkaMurder extends JavaPlugin{

@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.command;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import fr.ekazuki.ekamurder.EkaMurder;
+import fr.ekazuki.ekamurder.player.MurderFakePlayer;
+import fr.ekazuki.ekamurder.player.MurderPlayer;
+import fr.ekazuki.ekamurder.player.MurderSkin;
 
 public class MurderCommand implements CommandExecutor {
 	

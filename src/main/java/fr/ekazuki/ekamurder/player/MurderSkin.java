@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.player;
 
 import java.util.ArrayList;
 import java.util.Arrays;

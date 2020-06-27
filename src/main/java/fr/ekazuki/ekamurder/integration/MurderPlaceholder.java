@@ -1,6 +1,8 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.integration;
 import org.bukkit.entity.Player;
 
+import fr.ekazuki.ekamurder.EkaMurder;
+import fr.ekazuki.ekamurder.player.MurderPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class MurderPlaceholder extends PlaceholderExpansion {

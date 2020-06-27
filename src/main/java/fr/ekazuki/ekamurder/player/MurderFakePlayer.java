@@ -1,4 +1,4 @@
-package fr.ekazuki.ekamurder;
+package fr.ekazuki.ekamurder.player;
 
 import java.util.UUID;
 
@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import fr.ekazuki.ekamurder.EkaMurder;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import net.minecraft.server.v1_15_R1.MinecraftServer;
 import net.minecraft.server.v1_15_R1.PacketPlayOutPlayerInfo;
