@@ -3,6 +3,7 @@ import org.bukkit.entity.Player;
 
 import fr.ekazuki.ekamurder.EkaMurder;
 import fr.ekazuki.ekamurder.player.MurderPlayer;
+import fr.ekazuki.ekamurder.sql.MurderStatType;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class MurderPlaceholder extends PlaceholderExpansion {
@@ -102,20 +103,17 @@ public class MurderPlaceholder extends PlaceholderExpansion {
             return murder.player.getName();
         }
         
-        // %someplugin_placeholder2%
-        if(identifier.equals("murder_wins")){
-            return "soon";
+        if(identifier.equals("murder_win")) {
+        	return String.valueOf(this.plugin.sqlManager.getStat(player, MurderStatType.MURDER_WIN));
         }
         
-        // %someplugin_placeholder2%
-        if(identifier.equals("detective_wins")){
-        	return "soon";
+        if(identifier.equals("detective_win")) {
+        	return String.valueOf(this.plugin.sqlManager.getStat(player, MurderStatType.DETECTIVE_WIN));
         }
-        
-        // %someplugin_placeholder2%
-        if(identifier.equals("deaths")){
-        	return "soon";
-        }
+
+		if(identifier.equals("death")) {
+			return String.valueOf(this.plugin.sqlManager.getStat(player, MurderStatType.DEATH));
+		}
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 
         // was provided

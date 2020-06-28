@@ -73,7 +73,8 @@ public class MurderSqlManager implements Listener {
     }
     
     public int getStat(Player player, MurderStatType statType) {
-    	return 0;
+    	SqlPlayer sqlp = this.getSqlPlayer(player);
+    	return sqlp.getStat(statType);
     }
     
     public ItemStack getItem(Player player) {
