@@ -39,6 +39,8 @@ public class MurderPlayer {
 		this.role = role;
 		this.canGetBow = true;
 		
+		this.setSkin(skin);
+		
 		this.plugin.debug("Creating new MurderPlayer "+player.getDisplayName()+ " with role "+role+"[MurderPlayer#MurderPlayer()]");
 		
 		if(role.equals(MurderRole.MURDER)) {
@@ -68,8 +70,6 @@ public class MurderPlayer {
 			this.plugin.debug("Nothing he is innocent [MurderPlayer#MurderPlayer()]");
 			player.sendTitle("§lVous êtes Innocent", null, 10, 70, 30);
 		}
-		
-		this.setSkin(skin);
 	}
 	
 	public void remove() {
@@ -162,8 +162,6 @@ public class MurderPlayer {
     		
             //ADDS THE PLAYER
     		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)this.player).getHandle()));
-    		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.player.getEntityId()));
-    		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)this.player).getHandle()));
     		
     		if(pl == this.player) {
     			PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(DimensionManager.OVERWORLD, 0, WorldType.NORMAL, EnumGamemode.ADVENTURE);
@@ -171,6 +169,9 @@ public class MurderPlayer {
     			pl.teleport(pl.getLocation());
     			float speed = pl.getWalkSpeed();
     			pl.setWalkSpeed(0.2f);
+    		} else {
+    			cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.player.getEntityId()));
+        		cpl.getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(((CraftPlayer)this.player).getHandle()));
     		}
         }
 	}

@@ -6,3 +6,9 @@ custom-tablist: true
 command-end: "say %player% est trop trop fort"
 command-murder-win: "say %player% murder trop trop fort"
 command-detective-win: "say %player% detective trop trop fort"
+
+host: localhost
+port: 3306
+database: ekaplugins
+user: USERNAME
+pass: PASSWORD

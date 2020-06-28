@@ -18,6 +18,7 @@ import fr.ekazuki.ekamurder.EkaMurder;
 import fr.ekazuki.ekamurder.player.MurderFakePlayer;
 import fr.ekazuki.ekamurder.player.MurderPlayer;
 import fr.ekazuki.ekamurder.player.MurderSkin;
+import fr.ekazuki.ekamurder.sql.MurderStatType;
 
 public class MurderCommand implements CommandExecutor {
 	
@@ -145,6 +146,8 @@ public class MurderCommand implements CommandExecutor {
 						this.noPerm(sender);
 					}
 					break;
+				case "adddeath":
+					this.plugin.sqlManager.getSqlPlayer((Player) sender).addStat(MurderStatType.DEATH);
 			}
 			return true;
 		} else {

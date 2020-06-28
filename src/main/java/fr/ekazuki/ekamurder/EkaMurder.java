@@ -24,12 +24,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.ekazuki.ekamurder.command.MurderCommand;
 import fr.ekazuki.ekamurder.command.MurderTabCompletion;
+import fr.ekazuki.ekamurder.event.MurderPlayerDeath;
+import fr.ekazuki.ekamurder.event.MurderPlayerWin;
 import fr.ekazuki.ekamurder.integration.MurderPlaceholder;
 import fr.ekazuki.ekamurder.integration.MurderPluginMessage;
 import fr.ekazuki.ekamurder.player.MurderFakePlayer;
 import fr.ekazuki.ekamurder.player.MurderPlayer;
 import fr.ekazuki.ekamurder.player.MurderRole;
 import fr.ekazuki.ekamurder.player.MurderSkin;
+import fr.ekazuki.ekamurder.sql.MurderSqlManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class EkaMurder extends JavaPlugin{
@@ -40,6 +43,7 @@ public class EkaMurder extends JavaPlugin{
     private final SecureRandom random = new SecureRandom();
 	public boolean isDebugging;
 	public boolean usePAPI = false;
+	public MurderSqlManager sqlManager;
 	
 	public static EkaMurder INSTANCE;
 
@@ -51,8 +55,10 @@ public class EkaMurder extends JavaPlugin{
 		this.isDebugging = true;
 		this.saveDefaultConfig();
 		this.getCommand("murder").setExecutor(new MurderCommand(this));
-	    this.getServer().getPluginManager().registerEvents(new MurderListener(this), this);
 	    this.getCommand("murder").setTabCompleter(new MurderTabCompletion());
+	    this.getServer().getPluginManager().registerEvents(new MurderListener(this), this);
+	    this.sqlManager = new MurderSqlManager();
+	    this.getServer().getPluginManager().registerEvents(this.sqlManager, this);
 		this.isPlaying = false;
 		this.players = new ArrayList<MurderPlayer>();
 		this.fakePlayers = new ArrayList<MurderFakePlayer>();
@@ -210,31 +216,35 @@ public class EkaMurder extends JavaPlugin{
 		String title = null;
 		
 		String command = null;
-		Player player = null;
+		MurderPlayer mpl = null;
 		
 		if (this.players.size() == 1) {
 			if (this.getDetective() == null) {
 				title = "§4Victoire du Murder";
 				command = this.getConfig().getString("command-murder-win");
-				player = this.getMurder().player;
+				mpl = this.getMurder();
 			} else {
 				title = "§2Victoire du Détéctive";
 				command = this.getConfig().getString("command-detective-win");
-				player = this.getDetective().player;
+				mpl = this.getDetective();
 			}
 		} else {
 			if (this.getMurder() == null) {
 				title = "§2Victoire du Détéctive";
 				command = this.getConfig().getString("command-detective-win");
-				player = this.getDetective().player;
+				mpl = this.getDetective();
 			}
 		}
 		
 		if (title != null) {
+			
+			MurderPlayerWin event = new MurderPlayerWin(mpl);
+			this.getServer().getPluginManager().callEvent(event);
+			
 			if(this.usePAPI) {
-				command = PlaceholderAPI.setPlaceholders(player, command);
+				command = PlaceholderAPI.setPlaceholders(mpl.player, command);
 			} else {
-				command.replace("%player_name%", player.getName());
+				command.replace("%player_name%", mpl.player.getName());
 			}
 			
 			this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command);
@@ -253,12 +263,16 @@ public class EkaMurder extends JavaPlugin{
 				this.getServer().dispatchCommand(this.getServer().getConsoleSender(), command);
 				p.sendTitle(title, null, 10, 70, 30);
 			}
+			
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void removePlayer(MurderPlayer mpl) {
 		this.debug("Attempt to remove player "+mpl.player.getDisplayName()+" with role "+mpl.role+" from the game [EkaMurder#removePlayer()]");
+		
+		MurderPlayerDeath event = new MurderPlayerDeath(mpl);
+		this.getServer().getPluginManager().callEvent(event);
 		
 		mpl.player.sendMessage("§4[§c§lMurder§r§4]§e Vous êtes mort, les autres personne ne peuvent plus vous voir");
 		
