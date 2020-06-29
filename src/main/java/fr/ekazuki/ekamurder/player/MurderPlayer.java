@@ -17,6 +17,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
 import fr.ekazuki.ekamurder.EkaMurder;
+import fr.ekazuki.ekamurder.sql.SqlPlayer;
 import net.minecraft.server.v1_15_R1.DimensionManager;
 import net.minecraft.server.v1_15_R1.EnumGamemode;
 import net.minecraft.server.v1_15_R1.PacketPlayOutEntityDestroy;
@@ -47,8 +48,11 @@ public class MurderPlayer {
 			this.plugin.debug("Giving stick to murder [MurderPlayer#MurderPlayer()]");
 			player.sendTitle("§4Vous êtes Murder", null, 10, 70, 30);
 			
+			SqlPlayer sqlp = this.plugin.sqlManager.getSqlPlayer(player);
+			Material material = sqlp.getItem(role).getType();
+			
 			// Set slot 0 of player by a stick
-	        ItemStack item = new ItemStack(Material.STICK, 1);
+	        ItemStack item = new ItemStack(material, 1);
 	        ItemMeta meta = item.getItemMeta();
 	        meta.setDisplayName("Knife");
 	        item.setItemMeta(meta);
@@ -58,8 +62,11 @@ public class MurderPlayer {
 			this.plugin.debug("Giving bow and arrow to detective [MurderPlayer#MurderPlayer()]");
 			player.sendTitle("§2Vous êtes Detective", null, 10, 70, 30);
 			
+			SqlPlayer sqlp = this.plugin.sqlManager.getSqlPlayer(player);
+			Material material = sqlp.getItem(role).getType();
+			
 			//Set slot 0 of player by a bow
-	        ItemStack item = new ItemStack(Material.BOW, 1);
+	        ItemStack item = new ItemStack(material, 1);
 	        ItemMeta meta = item.getItemMeta();
 	        meta.setDisplayName("Gun");
 	        item.setItemMeta(meta);
@@ -195,7 +202,10 @@ public class MurderPlayer {
 	public void giveBow() {
 		this.plugin.debug("Attempt to give bow to "+this.player.getDisplayName()+" with role "+this.role+" [MurderPlayer#giveBow()]");
 		//Set slot 1 of player by an arrow
-        ItemStack item = new ItemStack(Material.BOW, 1);
+		SqlPlayer sqlp = this.plugin.sqlManager.getSqlPlayer(player);
+		Material material = sqlp.getItem(role).getType();
+		
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("Gun");
         item.setItemMeta(meta);

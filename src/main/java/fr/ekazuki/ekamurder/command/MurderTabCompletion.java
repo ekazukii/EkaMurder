@@ -19,6 +19,8 @@ public class MurderTabCompletion implements TabCompleter {
 		complete.add("resetspawn");
 		complete.add("deathpos");
 		complete.add("help");
+		complete.add("gun");
+		complete.add("knife");
 		
 		return complete;
 	}

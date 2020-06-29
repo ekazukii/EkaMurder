@@ -63,7 +63,7 @@ public class MurderListener implements Listener {
     	
         if(event.getItem() != null) {
         	this.plugin.debug(p.getDisplayName()+" has an item in hand [MurderListener#onPlayerUse()]");
-            if(event.getItem().getType() == Material.BOW){
+            if(event.getItem().getItemMeta().getDisplayName().equals("Gun")){
             	this.plugin.debug(p.getDisplayName()+" has an bow in hand [MurderListener#onPlayerUse()]");
             	MurderPlayer mpl = this.plugin.murderPlayerFromOnlinePlayer(p);
             	if (mpl == null) {
@@ -136,11 +136,15 @@ public class MurderListener implements Listener {
     				return;
     			}
     			
+    			if(item.getType().equals(Material.AIR)) {
+    				return;
+    			}
+    			
     			if (mpVictim.equals(mpDamager)) {
     				System.out.println("MYSELF");
     			}
     			
-    			if (item.getType().equals(Material.BOW) && mpDamager.role == MurderRole.DETECTIVE) {
+    			if (item.getItemMeta().getDisplayName().equals("Gun") && mpDamager.role == MurderRole.DETECTIVE) {
     				this.plugin.debug(mpDamager.player.getDisplayName()+" is detective and has bow [MurderListener#onEntityDamage()]");
     				if(mpVictim.role == MurderRole.INNOCENT) {
     					this.plugin.debug("The player shoot on innocent [MurderListener#onEntityDamage()]");
@@ -164,11 +168,15 @@ public class MurderListener implements Listener {
     				return;
     			}
     			
+    			if(item.getType().equals(Material.AIR)) {
+    				return;
+    			}
+    			
     			if (mpVictim.equals(mpDamager)) {
     				return;
     			}
     			
-    			if (item.getType().equals(Material.STICK) && mpDamager.role == MurderRole.MURDER) {
+    			if (item.getItemMeta().getDisplayName().equals("Knife") && mpDamager.role == MurderRole.MURDER) {
     				this.plugin.debug(mpDamager.player.getDisplayName()+" is murder and has stick [MurderListener#onEntityDamage()]");
     				
     				if(mpVictim.role == MurderRole.DETECTIVE) {

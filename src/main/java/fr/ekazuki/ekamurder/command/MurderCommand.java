@@ -146,8 +146,18 @@ public class MurderCommand implements CommandExecutor {
 						this.noPerm(sender);
 					}
 					break;
-				case "adddeath":
-					this.plugin.sqlManager.getSqlPlayer((Player) sender).addStat(MurderStatType.DEATH);
+				case "gun":
+					if (sender instanceof Player) {
+						this.plugin.sqlManager.getSqlPlayer((Player) sender).chooseGun();
+					} else {
+						this.onlyPlayer(sender);
+					}
+				case "knife":
+					if (sender instanceof Player) {
+						this.plugin.sqlManager.getSqlPlayer((Player) sender).chooseKnife();
+					} else {
+						this.onlyPlayer(sender);
+					}
 			}
 			return true;
 		} else {

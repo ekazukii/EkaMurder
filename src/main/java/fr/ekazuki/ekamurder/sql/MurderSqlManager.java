@@ -12,12 +12,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.ekazuki.ekamurder.EkaMurder;
 import fr.ekazuki.ekamurder.event.MurderPlayerDeath;
@@ -54,11 +58,13 @@ public class MurderSqlManager implements Listener {
     	
     	this.players = new ArrayList<SqlPlayer>();
     	
-        host = this.plugin.getConfig().getString("host");
-        port = this.plugin.getConfig().getInt("port");
-        database = this.plugin.getConfig().getString("database");
-        username = this.plugin.getConfig().getString("user");
-        password = this.plugin.getConfig().getString("pass");
+    	Configuration config = this.plugin.getConfig();
+    	
+        host = config.getString("host");
+        port = config.getInt("port");
+        database = config.getString("database");
+        username = config.getString("user");
+        password = config.getString("pass");
         
         try {
             openConnection();
@@ -79,6 +85,35 @@ public class MurderSqlManager implements Listener {
     
     public ItemStack getItem(Player player) {
     	return null;
+    }
+    
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+    	if (event.getView().getTitle() == "§3Choix du gun") {
+    		event.setCancelled(true);
+    		ItemStack item = event.getCurrentItem();
+    		if (item != null && item.getType() != Material.AIR) {
+    			ItemMeta meta = item.getItemMeta();
+    			if(meta.getLore().contains("§2DISPONIBLE")) {
+    				SqlPlayer sqlp = this.getSqlPlayer((Player) event.getWhoClicked());
+    				sqlp.setItem(new ItemStack(item.getType(), 1), MurderRole.DETECTIVE);
+    			} else {
+    				event.getWhoClicked().sendMessage("§4[§c§lMurder§r§4]§e Vous n'avez pas débloqué cet item");
+    			}
+    		}
+    	} else if(event.getView().getTitle() == "§3Choix du knife") {
+    		event.setCancelled(true);
+    		ItemStack item = event.getCurrentItem();
+    		if (item != null && item.getType() != Material.AIR) {
+    			ItemMeta meta = item.getItemMeta();
+    			if(meta.getLore().contains("§2DISPONIBLE")) {
+    				SqlPlayer sqlp = this.getSqlPlayer((Player) event.getWhoClicked());
+    				sqlp.setItem(new ItemStack(item.getType(), 1), MurderRole.MURDER);
+    			} else {
+    				event.getWhoClicked().sendMessage("§4[§c§lMurder§r§4]§e Vous n'avez pas débloqué cet item");
+    			}
+    		}
+    	}
     }
     
     @EventHandler

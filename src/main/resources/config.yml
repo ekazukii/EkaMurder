@@ -12,3 +12,44 @@ port: 3306
 database: ekaplugins
 user: USERNAME
 pass: PASSWORD
+
+guns:
+  0:
+    material: WOODEN_HOE
+    min-win: 0
+  1:
+    material: STONE_HOE
+    min-win: 5
+  2:
+    material: IRON_HOE
+    min-win: 20
+  3:
+    material: GOLDEN_HOE
+    min-win: 35
+  4:
+    material: DIAMOND_HOE
+    min-win: 50
+  5:
+    material: CARROT_ON_A_STICK	
+    min-win: 100
+
+
+knifes:
+  0: 
+    material: STICK
+    min-win: 0
+  1: 
+    material: WOODEN_SWORD
+    min-win: 5
+  2: 
+    material: STONE_SWORD
+    min-win: 15
+  3:
+    material: IRON_SWORD
+    min-win: 25
+  4:
+    material: GOLDEN_SWORD
+    min-win: 35
+  5:
+    material: DIAMOND_SWORD
+    min-win: 50
